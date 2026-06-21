@@ -137,7 +137,6 @@ npm run dev            # http://localhost:3000
 npm run build          # production build
 npm run lint           # lint
 npm test               # run the unit test suite (Vitest)
-npm run test:coverage  # tests + coverage report
 ```
 
 Try it: open `/3d-scene-2`, tap **✈️ Short flight** a few times to watch the sky
@@ -185,11 +184,10 @@ haze over and a smog column erupt — then **🌳 Plant a tree** to bring it bac
   resources (colors, particle seeds, positions) are memoized, and deterministic
   per‑cell jitter avoids re‑randomizing on every render.
 - **Testing** — the decision logic is pure and DOM‑free, so it's covered by a
-  **Vitest unit suite (39 tests, ~96% statement / 100% function coverage of
-  `lib/`)** with no mocks: the reducer (`LOG_ACTION`/`UNDO`/`RESET_DAY`,
-  conflict resolution, input validation, health clamping), the carbon
-  aggregations, the world‑health/scoring helpers, the insights engine, and the
-  3D math. Run `npm test` or `npm run test:coverage`.
+  **Vitest unit suite (39 tests)** with no mocks: the reducer
+  (`LOG_ACTION`/`UNDO`/`RESET_DAY`, conflict resolution, input validation,
+  health clamping), the carbon aggregations, the world‑health/scoring helpers,
+  the insights engine, and the 3D math. Run `npm test`.
 - **Accessibility** — semantic landmarks (`main`, `header`, `aside`, `footer`),
   real `<button>` elements with text labels (not icon‑only), and a non‑color
   signal on every choice (the `+/−` value and emoji), so impact isn't conveyed
