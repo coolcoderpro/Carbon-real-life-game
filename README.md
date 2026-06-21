@@ -177,10 +177,13 @@ haze over and a smog column erupt — then **🌳 Plant a tree** to bring it bac
   Options `nosniff`, Referrer-Policy, Permissions-Policy, HSTS) and the
   `X-Powered-By` fingerprint header is removed — see `next.config.mjs` and
   [`SECURITY.md`](./SECURITY.md). Nothing leaves the browser.
-- **Efficiency** — a single reducer with O(n) updates over a small action log;
-  the 3D world uses frame‑rate‑independent damping so animation cost is fixed
-  per frame regardless of device speed; deterministic per‑cell jitter avoids
-  re‑randomizing on every render.
+- **Efficiency** — state and actions are split into separate contexts so
+  dispatch‑only components (the action buttons) never re‑render on state
+  changes (they're also `React.memo`'d); a single reducer does O(n) updates over
+  a small action log; the 3D world uses frame‑rate‑independent damping so
+  animation cost is fixed per frame regardless of device speed; per‑object 3D
+  resources (colors, particle seeds, positions) are memoized, and deterministic
+  per‑cell jitter avoids re‑randomizing on every render.
 - **Testing** — the decision logic is pure and DOM‑free, so it's covered by a
   **Vitest unit suite (39 tests, ~96% statement / 100% function coverage of
   `lib/`)** with no mocks: the reducer (`LOG_ACTION`/`UNDO`/`RESET_DAY`,

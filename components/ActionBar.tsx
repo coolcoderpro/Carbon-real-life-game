@@ -1,7 +1,8 @@
 "use client";
 
+import { memo } from "react";
 import { motion } from "framer-motion";
-import { useGame } from "@/context/GameProvider";
+import { useGameActions } from "@/context/GameProvider";
 import {
   ACTION_PRESETS,
   CATEGORIES,
@@ -26,8 +27,10 @@ const buttonVariants = {
   },
 };
 
-function ActionButton({ preset }: { preset: ActionPreset }) {
-  const { logAction } = useGame();
+// Memoized + subscribed only to the stable actions context, so logging an
+// action never re-renders the (unchanged) button grid.
+const ActionButton = memo(function ActionButton({ preset }: { preset: ActionPreset }) {
+  const { logAction } = useGameActions();
   const emits = preset.co2e > 0;
 
   return (
@@ -52,7 +55,7 @@ function ActionButton({ preset }: { preset: ActionPreset }) {
       </span>
     </motion.button>
   );
-}
+});
 
 export default function ActionBar() {
   return (
