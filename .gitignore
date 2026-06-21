@@ -11,3 +11,7 @@ next-env.d.ts
 # logs & build artifacts
 *.log
 tsconfig.tsbuildinfo
+
+# local-only: editor skills & video production assets
+/.claude/
+/Youtube-video/
