@@ -133,9 +133,11 @@ public/              static assets (smoke texture + rendered webm)
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # production build
-npm run lint     # lint
+npm run dev            # http://localhost:3000
+npm run build          # production build
+npm run lint           # lint
+npm test               # run the unit test suite (Vitest)
+npm run test:coverage  # tests + coverage report
 ```
 
 Try it: open `/3d-scene-2`, tap **✈️ Short flight** a few times to watch the sky
@@ -170,15 +172,21 @@ haze over and a smog column erupt — then **🌳 Plant a tree** to bring it bac
 - **Security** — no backend, no network calls, no user data collected or stored,
   no `dangerouslySetInnerHTML`, no `eval`. Action ids are validated against the
   preset list before use (`getPreset` returns `undefined` → the reducer ignores
-  unknown ids). Nothing leaves the browser.
+  unknown ids). A strict set of HTTP **security headers** is sent on every
+  response (Content-Security-Policy, X-Frame-Options `DENY`, X-Content-Type-
+  Options `nosniff`, Referrer-Policy, Permissions-Policy, HSTS) and the
+  `X-Powered-By` fingerprint header is removed — see `next.config.mjs` and
+  [`SECURITY.md`](./SECURITY.md). Nothing leaves the browser.
 - **Efficiency** — a single reducer with O(n) updates over a small action log;
   the 3D world uses frame‑rate‑independent damping so animation cost is fixed
   per frame regardless of device speed; deterministic per‑cell jitter avoids
   re‑randomizing on every render.
-- **Testing** — the decision logic is built as pure, deterministic functions
-  (`healthDelta`, `clampHealth`, `clearPower`, `classifyHealth`, `totalCO2e`,
-  `generateInsights`, the reducer), which are directly unit‑testable without a
-  DOM or mocks.
+- **Testing** — the decision logic is pure and DOM‑free, so it's covered by a
+  **Vitest unit suite (39 tests, ~96% statement / 100% function coverage of
+  `lib/`)** with no mocks: the reducer (`LOG_ACTION`/`UNDO`/`RESET_DAY`,
+  conflict resolution, input validation, health clamping), the carbon
+  aggregations, the world‑health/scoring helpers, the insights engine, and the
+  3D math. Run `npm test` or `npm run test:coverage`.
 - **Accessibility** — semantic landmarks (`main`, `header`, `aside`, `footer`),
   real `<button>` elements with text labels (not icon‑only), and a non‑color
   signal on every choice (the `+/−` value and emoji), so impact isn't conveyed
